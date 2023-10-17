@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rc_write.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <BorderPane prefHeight="200.0" prefWidth="200.0">
+       <padding>
+           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+       </padding>
+      <top>
+          <Label fx:id="welcomeText" alignment="TOP_CENTER" text="Add a Map" BorderPane.alignment="CENTER" />
+      </top>
+      <left>
+          <Button alignment="CENTER" onAction="#onHelloButtonClick" text="Hello!" />
+      </left>
+      <center>
+          <VBox fx:id="HB" alignment="CENTER_RIGHT" prefHeight="1000" prefWidth="1000" spacing="15">
+              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
+                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
+                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              </HBox>
+              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
+                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
+                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              </HBox>
+              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
+                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
+                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              </HBox>
+              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
+                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
+                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              </HBox>
+          </VBox>
+
+      </center>
+   </BorderPane>
+</VBox>
