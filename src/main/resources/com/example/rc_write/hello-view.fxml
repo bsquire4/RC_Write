@@ -2,42 +2,57 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rc_write.HelloController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="500.0" prefWidth="500.0" maxHeight="500" maxWidth="500"
+      spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      fx:controller="com.example.rc_write.HelloController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
     </padding>
-   <BorderPane prefHeight="200.0" prefWidth="200.0">
+   <BorderPane maxHeight="1000.0" maxWidth="1000.0" prefHeight="1000.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
        <padding>
            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
        </padding>
       <top>
-          <Label fx:id="welcomeText" alignment="TOP_CENTER" text="Add a Map" BorderPane.alignment="CENTER" />
+          <Label fx:id="welcomeText" alignment="TOP_CENTER" prefHeight="14.0" prefWidth="10000.0" text="Add a Map" wrapText="true" BorderPane.alignment="CENTER">
+            <font>
+               <Font size="100" />
+            </font></Label>
       </top>
       <left>
-          <Button alignment="CENTER" onAction="#onHelloButtonClick" text="Hello!" />
+          <ImageView fx:id="ImageBox" pickOnBounds="true" preserveRatio="true" fitHeight="400" />
       </left>
-      <center>
-          <VBox fx:id="HB" alignment="CENTER_RIGHT" prefHeight="1000" prefWidth="1000" spacing="15">
-              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
-                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
-                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+      <right>
+          <VBox fx:id="VBContainer" alignment="CENTER" maxHeight="500.0" maxWidth="1000.0" spacing="10.0" prefWidth="550" VBox.vgrow="ALWAYS">
+              <Button fx:id="FileButton" onAction="#onFileSelect" prefWidth="360.0" text="Select Image File" BorderPane.alignment="CENTER" />
+              <HBox fx:id="HB1" prefHeight="30.0" prefWidth="400.0" spacing="15" >
+                  <TextField fx:id="TextColour1" prefWidth="250" BorderPane.alignment="CENTER" promptText="ROUTE COLOUR" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <TextField fx:id="TextDistance1" prefWidth="170" BorderPane.alignment="CENTER" promptText="ROUTE DISTANCE" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <CheckBox fx:id="ChoiceBox1" mnemonicParsing="false" text="Best?" BorderPane.alignment="CENTER" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" onAction="#change"/>
               </HBox>
-              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
-                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
-                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              <HBox prefHeight="30.0" prefWidth="400.0" spacing="15">
+                  <TextField fx:id="TextColour2" prefWidth="250" BorderPane.alignment="CENTER" promptText="ROUTE COLOUR" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <TextField fx:id="TextDistance2" prefWidth="170" BorderPane.alignment="CENTER" promptText="ROUTE DISTANCE" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <CheckBox fx:id="ChoiceBox2" mnemonicParsing="false" text="Best?" BorderPane.alignment="CENTER" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" onAction="#change"/>
               </HBox>
-              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
-                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
-                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              <HBox prefHeight="30.0" prefWidth="400.0" spacing="15">
+                  <TextField fx:id="TextColour3" prefWidth="250" BorderPane.alignment="CENTER" promptText="ROUTE COLOUR" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <TextField fx:id="TextDistance3" prefWidth="170" BorderPane.alignment="CENTER" promptText="ROUTE DISTANCE" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <CheckBox fx:id="ChoiceBox3" mnemonicParsing="false" text="Best?" BorderPane.alignment="CENTER" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" onAction="#change"/>
               </HBox>
-              <HBox prefHeight="1000" prefWidth="1000" spacing="15">
-                  <TextField prefWidth="200" BorderPane.alignment="CENTER" />
-                  <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
+              <HBox prefHeight="30.0" prefWidth="400.0" spacing="15">
+                  <TextField fx:id="TextColour4" prefWidth="250" BorderPane.alignment="CENTER" promptText="ROUTE COLOUR" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <TextField fx:id="TextDistance4" prefWidth="170" BorderPane.alignment="CENTER" promptText="ROUTE DISTANCE" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
+                  <CheckBox fx:id="ChoiceBox4" mnemonicParsing="false" text="Best?" BorderPane.alignment="CENTER" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS" onAction="#change"/>
               </HBox>
+            <BorderPane.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </BorderPane.margin>
+              <Button onAction="#onFinishButtonPress" prefWidth="360.0" text="Submit" BorderPane.alignment="CENTER" />
           </VBox>
-
-      </center>
+      </right>
    </BorderPane>
 </VBox>
