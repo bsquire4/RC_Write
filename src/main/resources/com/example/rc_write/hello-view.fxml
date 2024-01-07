@@ -23,11 +23,18 @@
             </font></Label>
       </top>
       <left>
-          <ImageView fx:id="ImageBox" pickOnBounds="true" preserveRatio="true" fitHeight="400" />
+          <VBox fx:id="VBImageCOntainer" alignment="CENTER" maxHeight="500.0" maxWidth="1000.0" spacing="10.0" prefWidth="550" VBox.vgrow="ALWAYS">
+              <ImageView fx:id="ImageBox" pickOnBounds="true" preserveRatio="true" fitHeight="400" fitWidth="600" />
+              <Button fx:id="ToggleImage" onAction="#changeImage" prefWidth="150.0" text="Toggle the Map Image" BorderPane.alignment="CENTER"/>
+
+          </VBox>
+
       </left>
       <right>
           <VBox fx:id="VBContainer" alignment="CENTER" maxHeight="500.0" maxWidth="1000.0" spacing="10.0" prefWidth="550" VBox.vgrow="ALWAYS">
-              <Button fx:id="FileButton" onAction="#onFileSelect" prefWidth="360.0" text="Select Image File" BorderPane.alignment="CENTER" />
+              <Button fx:id="FileButtonBlank" onAction="#onBlankFileSelect" prefWidth="360.0" text="Select the Blank Map File" BorderPane.alignment="CENTER" />
+              <Button fx:id="FileButtonRoutes" onAction="#onRoutesFileSelect" prefWidth="360.0" text="Select the Map File with the routes" BorderPane.alignment="CENTER" />
+              <Button fx:id="FileButtonDistances" onAction="#onDistancesFileSelect" prefWidth="360.0" text="Select the Map File with the distances" BorderPane.alignment="CENTER" />
               <HBox fx:id="HB1" prefHeight="30.0" prefWidth="400.0" spacing="15" >
                   <TextField fx:id="TextColour1" prefWidth="250" BorderPane.alignment="CENTER" promptText="ROUTE COLOUR" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>
                   <TextField fx:id="TextDistance1" prefWidth="170" BorderPane.alignment="CENTER" promptText="ROUTE DISTANCE" HBox.hgrow="NEVER" VBox.vgrow="ALWAYS"/>

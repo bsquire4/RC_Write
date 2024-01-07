@@ -9,6 +9,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -33,22 +34,50 @@ public class HelloController {
     public CheckBox ChoiceBox3;
     public CheckBox ChoiceBox4;
 
-    public File imageFile;
+    public File[] imageFiles = new File[3];
 
-    public void onFileSelect() {
+    public void onBlankFileSelect() {
+
         FileChooser fileChooser = new FileChooser();
         Stage stage = new Stage();
-        imageFile = fileChooser.showOpenDialog(stage);
+        imageFiles[0] = fileChooser.showOpenDialog(stage);
         try {
-            InputStream stream = new FileInputStream(imageFile);
+            InputStream stream = new FileInputStream(imageFiles[0]);
             Image image = new Image(stream);
             ImageBox.setImage(image);
         } catch (Exception e) {
-            System.out.println("FILE NOT ACCEPTED");
+            System.out.println("BLANK IMAGE FILE NOT ACCEPTED");
             System.out.println(e);
         }
     }
 
+    public void onRoutesFileSelect() {
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = new Stage();
+        imageFiles[1] = fileChooser.showOpenDialog(stage);
+        try {
+            InputStream stream = new FileInputStream(imageFiles[1]);
+            Image image = new Image(stream);
+            ImageBox.setImage(image);
+        } catch (Exception e) {
+            System.out.println("ROUTES IMAGE FILE NOT ACCEPTED");
+            System.out.println(e);
+        }
+    }
+
+    public void onDistancesFileSelect() {
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = new Stage();
+        imageFiles[2] = fileChooser.showOpenDialog(stage);
+        try {
+            InputStream stream = new FileInputStream(imageFiles[2]);
+            Image image = new Image(stream);
+            ImageBox.setImage(image);
+        } catch (Exception e) {
+            System.out.println("DISTANCES IMAGE FILE NOT ACCEPTED");
+            System.out.println(e);
+        }
+    }
     public void change(ActionEvent event) {
         //Making sure only 1 choice can be "Best"
         if (ChoiceBox1.isSelected()) {
@@ -76,10 +105,15 @@ public class HelloController {
     }
 
     public void onFinishButtonPress(ActionEvent event) {
+
+        readingFromFile(new File("C:/Users/Ben04/Downloads/CV-TestingA"));
+
         String MapFilesLocation = "../MapsFile.csv";
         String counterFileLocation = "../Counter.csv";
+        Maps tmpMap = new Maps();
+
         int id = 0;
-        String imageLocation = String.valueOf(imageFile);
+        int otherCounterVariable = 0;
         int choice = 0;
         int correctChoice = 0;
         List<String> colours = new ArrayList<>();
@@ -159,7 +193,7 @@ public class HelloController {
             alert.showAndWait();
         }
 
-        if (imageLocation.equals("") && validInput) {
+        if (String.valueOf(imageFiles[0]).equals("") || String.valueOf(imageFiles[1]).equals("") || String.valueOf(imageFiles[2]).equals("") && validInput) {
             validInput = false;
             alert.setTitle("Invalid Input");
             alert.setHeaderText("Invalid Input");
@@ -180,15 +214,12 @@ public class HelloController {
             try {
                 Scanner counterScanner = new Scanner(new File(counterFileLocation));
                 counterScanner.useDelimiter(",");
-                id = Integer.parseInt(counterScanner.next());
 
+                otherCounterVariable = Integer.parseInt(counterScanner.next());
                 System.out.println(id);
                 id++;
-                while (counterScanner.hasNext()) {
-                    List<String> tempList = new ArrayList<>();
-                    tempList.add(counterScanner.next());
-                }
 
+                tmpMap.setId(Integer.parseInt(counterScanner.next()) + 1);
                 counterScanner.close();
             } catch (Exception e) {
                 System.out.println("ERROR READING COUNTER FILE");
@@ -196,19 +227,21 @@ public class HelloController {
             }
 
             List<String[]> dataLines = new ArrayList<>();
-            String[] fileinput = new String[4 + choice + choice];
+            String[] fileinput = new String[6 + choice + choice];
             fileinput[0] = Integer.toString(id);
-            fileinput[1] = imageLocation;
-            fileinput[2] = Integer.toString(choice);
-            fileinput[3] = Integer.toString(correctChoice);
+            fileinput[1] = String.valueOf(imageFiles[0]);
+            fileinput[2] = String.valueOf(imageFiles[1]);
+            fileinput[3] = String.valueOf(imageFiles[2]);
+            fileinput[4] = Integer.toString(choice);
+            fileinput[5] = Integer.toString(correctChoice);
             int counter = 0;
             for (String i : colours) {
-                fileinput[4 + counter] = i;
+                fileinput[6 + counter] = i;
                 counter++;
             }
             counter = 0;
             for (String x : distances) {
-                fileinput[4 + choice + counter] = x;
+                fileinput[6 + choice + counter] = x;
                 counter++;
             }
 
@@ -231,6 +264,8 @@ public class HelloController {
                 FileWriter fileWriter1 = new FileWriter(counterFileLocation, false);
                 System.out.println("ID:" + id);
                 fileWriter1.write(String.valueOf(id));
+                fileWriter1.write(",");
+                fileWriter1.write(String.valueOf(otherCounterVariable));
                 fileWriter1.write(",");
                 fileWriter1.flush();
                 fileWriter1.close();
@@ -265,4 +300,74 @@ public class HelloController {
 
         return true;
     }
+
+    int imageCounter = 0;
+    public void changeImage(ActionEvent event) {
+        System.out.println("TOGGLE PRESSED");
+        if(imageCounter < 2)
+        {
+            imageCounter ++;
+        }
+        else
+        {
+            imageCounter =0;
+        }
+        try
+        {
+            InputStream stream;
+            if(imageFiles[imageCounter] == null)
+            {
+                stream = new FileInputStream("C:/Users/Ben04/Downloads/EM104989.jpg");
+            }
+            else {
+                stream = new FileInputStream(imageFiles[imageCounter]);
+
+            }
+            Image image = new Image(stream);
+            ImageBox.setImage(image);
+            System.out.println(("IMAGE SET"));
+        }catch (Exception e)
+        {
+            System.out.println("ERROR GETTING FILE");
+            System.out.println(e);
+        }
+    }
+
+    public void readingFromFile(File folderLocation) {
+//
+//        try{
+//            Scanner fileReader = new Scanner(new File(folderLocation.getAbsolutePath() + "/config.txt"));
+//            System.out.println(folderLocation.getAbsoluteFile()+ "/config.txt");
+//            fileReader.useDelimiter("|");
+//            while (fileReader.hasNext())
+//            {
+//                System.out.print(fileReader.next());
+//            }
+//        }catch (Exception e)
+//        {
+//            System.out.println("ERROR");
+//            System.out.println(e);
+//        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(folderLocation.getAbsolutePath() + "/config.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] splitData = line.split("\\|"); // Splitting by '|'
+                for (String data : splitData) {
+                    System.out.println(data);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//
+//        boolean fileExists = true;
+//        int counter = 1;
+//        while(fileExists){
+//            imageFiles[0] = new File(folderLocation.getName())
+//        }
+    }
+
 }
