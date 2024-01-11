@@ -1,6 +1,11 @@
 package com.example.rc_write;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class Maps {
     private String Blanklocation;
@@ -8,12 +13,12 @@ public class Maps {
     private String DistanceLocation;
 
     private int numChoices;
-    private String[] colours;
+    private List<String> colours;
     private int correctChoice;
     protected int id;
-    private int [] distances;
+    private List<String> distances;
 
-    public Maps(int id, String Blanklocation,String RouteLocation, String DistanceLocation, int numChoices, int correctChoice, String[] colours, int[] distances) {
+    public Maps(int id, String Blanklocation,String RouteLocation, String DistanceLocation, int numChoices, int correctChoice, List colours, List distances) {
         this.Blanklocation = Blanklocation;
         this.RouteLocation = RouteLocation;
         this.DistanceLocation = DistanceLocation;
@@ -28,12 +33,23 @@ public class Maps {
         this.RouteLocation = "";
         this.DistanceLocation = "";
         this.numChoices = 0;
-        this.colours = new String[0];
+        this.colours = new ArrayList<>();
         this.correctChoice = 0;
-        this.id = 0;
-        this.distances = new int[0];
+        this.id = createID();
+        this.distances = new ArrayList<>();
     }
 
+    public Maps(int i) {
+        this.Blanklocation = "";
+        this.RouteLocation = "";
+        this.DistanceLocation = "";
+        this.numChoices = 0;
+        this.colours = new ArrayList<>();
+        this.correctChoice = 0;
+        this.id = 0;
+        this.distances = new ArrayList<>();
+
+    }
 
     @Override
     public String toString() {
@@ -42,15 +58,11 @@ public class Maps {
                 ", RouteLocation='" + RouteLocation + '\'' +
                 ", DistanceLocation='" + DistanceLocation + '\'' +
                 ", numChoices=" + numChoices +
-                ", colours=" + Arrays.toString(colours) +
+                ", colours=" + colours +
                 ", correctChoice=" + correctChoice +
                 ", id=" + id +
-                ", distances=" + Arrays.toString(distances) +
+                ", distances=" + distances +
                 '}';
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getBlanklocation() {
@@ -85,11 +97,11 @@ public class Maps {
         this.numChoices = numChoices;
     }
 
-    public String[] getColours() {
+    public List<String> getColours() {
         return colours;
     }
 
-    public void setColours(String[] colours) {
+    public void setColours(List<String> colours) {
         this.colours = colours;
     }
 
@@ -105,19 +117,107 @@ public class Maps {
         return id;
     }
 
-    public int[] getDistances() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<String> getDistances() {
         return distances;
     }
 
-    public void setDistances(int[] distances) {
+    public void setDistances(List<String> distances) {
         this.distances = distances;
     }
+    int otherCounterVariable = 0;
+    String counterFileLocation = "../Counter.csv";
 
-    public void getDistancesString()
+
+    public int createID()
     {
-        for (int i:distances) {
-            System.out.println(i);
+        int id = 0;
+
+        try {
+            Scanner counterScanner = new Scanner(new File(counterFileLocation));
+            counterScanner.useDelimiter(",");
+            id = Integer.parseInt(counterScanner.next());
+            otherCounterVariable = Integer.parseInt(counterScanner.next());
+            System.out.println(id);
+            id++;
+            counterScanner.close();
+        } catch (Exception e) {
+            System.out.println("ERROR READING COUNTER FILE");
+            System.out.println(e);
         }
+
+
+        return id;
     }
 
+    public void saveToFile()
+    {
+
+        try {
+            FileWriter fileWriter1 = new FileWriter(counterFileLocation, false);
+            System.out.println("ID:" + id);
+            fileWriter1.write(String.valueOf(id));
+            fileWriter1.write(",");
+            fileWriter1.write(String.valueOf(otherCounterVariable));
+            fileWriter1.write(",");
+            fileWriter1.flush();
+            fileWriter1.close();
+        } catch (Exception e) {
+            System.out.println("FAILED TO WRITE TO COUNTER FILE");
+            System.out.println(e);
+
+        }
+
+
+        try{
+            FileWriter fileWriter = new FileWriter("../UsersMapsNotDone.csv",true);
+            fileWriter.write(String.valueOf(id));
+            fileWriter.write(",");
+            fileWriter.flush();
+            fileWriter.close();
+        }catch (Exception e)
+        {
+            System.out.println("FAILED TO WRITE TO USERSMAPSNOTDONEFILE");
+            System.out.println(e);
+        }
+
+        String MapFilesLocation = "../MapsFile.csv";
+
+        String[] fileinput = new String[6 + this.numChoices + this.numChoices];
+        fileinput[0] = Integer.toString(this.getId());
+        fileinput[1] = String.valueOf(this.getBlanklocation());
+        fileinput[2] = String.valueOf(this.getRouteLocation());
+        fileinput[3] = String.valueOf(this.getDistanceLocation());
+        fileinput[4] = Integer.toString(this.getNumChoices());
+        fileinput[5] = Integer.toString(this.getCorrectChoice());
+        int counter = 0;
+        for (String i : this.getColours()) {
+            fileinput[6 + counter] = i;
+            counter++;
+        }
+        counter = 0;
+        for (String x : this.getDistances()) {
+            fileinput[6 + this.numChoices + counter] = x;
+            counter++;
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(MapFilesLocation, true);
+            for (String y : fileinput) {
+                System.out.println(y);
+                fileWriter.write(y);
+                fileWriter.flush();
+                fileWriter.write(",");
+                fileWriter.flush();
+            }
+
+        } catch (Exception e) {
+            System.out.println("FAILED TO WRITE TO MAPFILESLOCATION FILE");
+            System.out.println(e);
+        }
+
+    }
 }

@@ -5,13 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
+
+import javax.swing.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,6 +79,7 @@ public class HelloController {
             System.out.println(e);
         }
     }
+
     public void change(ActionEvent event) {
         //Making sure only 1 choice can be "Best"
         if (ChoiceBox1.isSelected()) {
@@ -105,15 +107,8 @@ public class HelloController {
     }
 
     public void onFinishButtonPress(ActionEvent event) {
-
-        readingFromFile(new File("C:/Users/Ben04/Downloads/CV-TestingA"));
-
-        String MapFilesLocation = "../MapsFile.csv";
-        String counterFileLocation = "../Counter.csv";
         Maps tmpMap = new Maps();
 
-        int id = 0;
-        int otherCounterVariable = 0;
         int choice = 0;
         int correctChoice = 0;
         List<String> colours = new ArrayList<>();
@@ -209,73 +204,25 @@ public class HelloController {
         }
 
         if (validInput) {
-            String[] coloursString = new String[choice];
-            String[] distancesString = new String[choice];
-            try {
-                Scanner counterScanner = new Scanner(new File(counterFileLocation));
-                counterScanner.useDelimiter(",");
+            tmpMap.setBlanklocation(String.valueOf(imageFiles[0]));
+            tmpMap.setRouteLocation(String.valueOf(imageFiles[1]));
+            tmpMap.setDistanceLocation(String.valueOf(imageFiles[2]));
+            tmpMap.setNumChoices(choice);
+            tmpMap.setCorrectChoice(correctChoice);
+            tmpMap.setColours(colours);
+            tmpMap.setDistances(distances);
 
-                otherCounterVariable = Integer.parseInt(counterScanner.next());
-                System.out.println(id);
-                id++;
+            tmpMap.saveToFile();
 
-                tmpMap.setId(Integer.parseInt(counterScanner.next()) + 1);
-                counterScanner.close();
-            } catch (Exception e) {
-                System.out.println("ERROR READING COUNTER FILE");
-                System.out.println(e);
+            if(importedMapsList.size() > 0)
+            {
+                updateBoxes();
             }
-
-            List<String[]> dataLines = new ArrayList<>();
-            String[] fileinput = new String[6 + choice + choice];
-            fileinput[0] = Integer.toString(id);
-            fileinput[1] = String.valueOf(imageFiles[0]);
-            fileinput[2] = String.valueOf(imageFiles[1]);
-            fileinput[3] = String.valueOf(imageFiles[2]);
-            fileinput[4] = Integer.toString(choice);
-            fileinput[5] = Integer.toString(correctChoice);
-            int counter = 0;
-            for (String i : colours) {
-                fileinput[6 + counter] = i;
-                counter++;
-            }
-            counter = 0;
-            for (String x : distances) {
-                fileinput[6 + choice + counter] = x;
-                counter++;
-            }
-
-            try {
-                FileWriter fileWriter = new FileWriter(MapFilesLocation, true);
-                for (String y : fileinput) {
-                    System.out.println(y);
-                    fileWriter.write(y);
-                    fileWriter.flush();
-                    fileWriter.write(",");
-                    fileWriter.flush();
-                }
-
-            } catch (Exception e) {
-                System.out.println("FAILED TO WRITE TO MAPFILESLOCATION FILE");
-                System.out.println(e);
-            }
-
-            try {
-                FileWriter fileWriter1 = new FileWriter(counterFileLocation, false);
-                System.out.println("ID:" + id);
-                fileWriter1.write(String.valueOf(id));
-                fileWriter1.write(",");
-                fileWriter1.write(String.valueOf(otherCounterVariable));
-                fileWriter1.write(",");
-                fileWriter1.flush();
-                fileWriter1.close();
-            } catch (Exception e) {
-                System.out.println("FAILED TO WRITE TO COUNTER FILE");
-                System.out.println(e);
-
-            }
-
         }
+
+
+
+
     }
 
     public String convertToCSV(String[] data) {
@@ -302,72 +249,121 @@ public class HelloController {
     }
 
     int imageCounter = 0;
+
     public void changeImage(ActionEvent event) {
         System.out.println("TOGGLE PRESSED");
-        if(imageCounter < 2)
-        {
-            imageCounter ++;
+        if (imageCounter < 2) {
+            imageCounter++;
+        } else {
+            imageCounter = 0;
         }
-        else
-        {
-            imageCounter =0;
-        }
-        try
-        {
+        try {
             InputStream stream;
-            if(imageFiles[imageCounter] == null)
-            {
+            if (imageFiles[imageCounter] == null) {
                 stream = new FileInputStream("C:/Users/Ben04/Downloads/EM104989.jpg");
-            }
-            else {
+            } else {
                 stream = new FileInputStream(imageFiles[imageCounter]);
 
             }
             Image image = new Image(stream);
             ImageBox.setImage(image);
             System.out.println(("IMAGE SET"));
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("ERROR GETTING FILE");
             System.out.println(e);
         }
     }
 
-    public void readingFromFile(File folderLocation) {
-//
-//        try{
-//            Scanner fileReader = new Scanner(new File(folderLocation.getAbsolutePath() + "/config.txt"));
-//            System.out.println(folderLocation.getAbsoluteFile()+ "/config.txt");
-//            fileReader.useDelimiter("|");
-//            while (fileReader.hasNext())
-//            {
-//                System.out.print(fileReader.next());
-//            }
-//        }catch (Exception e)
-//        {
-//            System.out.println("ERROR");
-//            System.out.println(e);
-//        }
+
+    private List<Maps> importedMapsList = new ArrayList<>();
+
+    public void updateBoxes() {
+        Maps currentMap = importedMapsList.get(0);
+
+        TextColour1.setText("");
+        TextColour2.setText("");
+        TextColour3.setText("");
+        TextColour4.setText("");
+
+        TextDistance1.setText("");
+        TextDistance2.setText("");
+        TextDistance3.setText("");
+        TextDistance4.setText("");
+
+        ChoiceBox1.setSelected(false);
+        ChoiceBox2.setSelected(false);
+        ChoiceBox3.setSelected(false);
+        ChoiceBox4.setSelected(false);
+        change(new ActionEvent());
+
+        imageFiles[0] = new File(currentMap.getBlanklocation());
+        imageFiles[1] = new File(currentMap.getRouteLocation());
+        imageFiles[2] = new File(currentMap.getDistanceLocation());
+
+        if (currentMap.getNumChoices() > 1) {
+            TextDistance1.setText(currentMap.getDistances().get(0));
+            TextDistance2.setText(currentMap.getDistances().get(1));
+        }
+        if (currentMap.getNumChoices() > 2) {
+            TextDistance3.setText(currentMap.getDistances().get(2));
+        }
+        if (currentMap.getNumChoices() > 3) {
+            TextDistance4.setText(currentMap.getDistances().get(3));
+        }
+
+
+
+        switch (currentMap.getCorrectChoice()) {
+            case 1:
+                ChoiceBox1.setSelected(true);
+                break;
+            case 2:
+                ChoiceBox2.setSelected(true);
+                break;
+            case 3:
+                ChoiceBox3.setSelected(true);
+                break;
+            case 4:
+                ChoiceBox4.setSelected(true);
+                break;
+        }
+        change(new ActionEvent());
+        imageCounter = 1;
+        changeImage(new ActionEvent());
+
+        importedMapsList.remove(currentMap);
+    }
+
+    public void onFolderBtnSelect(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage stage = new Stage();
+        File folderLocation = directoryChooser.showDialog(stage);
 
         try (BufferedReader br = new BufferedReader(new FileReader(folderLocation.getAbsolutePath() + "/config.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] splitData = line.split("\\|"); // Splitting by '|'
-                for (String data : splitData) {
-                    System.out.println(data);
+
+                //if 0 ignore
+                if (splitData.length > 3) {
+                    Maps tmpMap = new Maps(0);
+                    String baseName = splitData[2].substring(0, splitData[2].lastIndexOf('.'));
+                    String extension = splitData[2].substring(splitData[2].lastIndexOf('.'));
+
+                    tmpMap.setBlanklocation(folderLocation.getAbsolutePath() + "/" + baseName + "_A" + extension);
+                    tmpMap.setRouteLocation(folderLocation.getAbsolutePath() + "/" + baseName + "_B" + extension);
+                    tmpMap.setDistanceLocation(folderLocation.getAbsolutePath() + "/" + baseName + "_C" + extension);
+                    tmpMap.setNumChoices((int) (splitData[3].chars().filter(ch -> ch == ';').count() + 1));
+                    tmpMap.setDistances(Arrays.stream(splitData[4].split(";")).collect(Collectors.toList()));
+                    tmpMap.setCorrectChoice(tmpMap.getDistances().indexOf(Collections.min(tmpMap.getDistances())) + 1);
+                    System.out.println(tmpMap.toString());
+                    importedMapsList.add(tmpMap);
+
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-//
-//        boolean fileExists = true;
-//        int counter = 1;
-//        while(fileExists){
-//            imageFiles[0] = new File(folderLocation.getName())
-//        }
+        updateBoxes();
     }
-
 }
