@@ -113,94 +113,95 @@ public class HelloController {
         int correctChoice = 0;
         List<String> colours = new ArrayList<>();
         List<String> distances = new ArrayList<>();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         boolean validInput = true;
-        if (!(TextColour1.getText().equals("") || TextDistance1.getText().equals(""))) {
+        if (!(TextColour1.getText().equals("") || TextDistance1.getText().equals("")) && validInput) {
             if (isNumber(TextColour1.getText()) || !isNumber(TextDistance1.getText())) {
                 validInput = false;
-                alert.setTitle("Invalid input");
-                alert.setHeaderText("Invalid Input");
-                alert.setContentText("You have entered an invalid input for the first colour or distance box");
-                alert.showAndWait();
+                inValidAlert("You have entered an invalid input for the first colour or distance box");
             } else {
-                choice++;
-                colours.add(TextColour1.getText());
-                distances.add(TextDistance1.getText());
-                if (ChoiceBox1.isSelected()) {
-                    correctChoice = 1;
+                if (TextColour1.getText().equalsIgnoreCase("RED") || TextColour1.getText().equalsIgnoreCase("GREEN") || TextColour1.getText().equalsIgnoreCase("PURPLE") || TextColour1.getText().equalsIgnoreCase("BLUE")) {
+                    choice++;
+                    colours.add(TextColour1.getText());
+                    distances.add(TextDistance1.getText());
+                    if (ChoiceBox1.isSelected()) {
+                        correctChoice = 1;
+                    }
+                } else {
+                    validInput = false;
+                    inValidAlert("You have entered an invalid input for the first colour. Make sure it is 'Red', 'Green', 'Blue' or 'Purple'");
                 }
+
             }
+        } else if (validInput){
+            validInput = false;
+            inValidAlert("Enter details for the first choice");
         }
-        if (!(TextColour2.getText().equals("") || TextDistance2.getText().equals(""))) {
+        if (!(TextColour2.getText().equals("") || TextDistance2.getText().equals("")) && validInput) {
             if (isNumber(TextColour2.getText()) || !isNumber(TextDistance2.getText())) {
                 validInput = false;
-                alert.setTitle("Invalid input");
-                alert.setHeaderText("Invalid Input");
-                alert.setContentText("You have entered an invalid input for the second colour or distance box");
-                alert.showAndWait();
+                inValidAlert("You have entered an invalid input for the second colour or distance box");
             } else {
-                choice++;
-                colours.add(TextColour2.getText());
-                distances.add(TextDistance2.getText());
-                if (ChoiceBox2.isSelected()) {
-                    correctChoice = 2;
+                if (TextColour2.getText().equalsIgnoreCase("RED") || TextColour2.getText().equalsIgnoreCase("GREEN") || TextColour2.getText().equalsIgnoreCase("PURPLE") || TextColour2.getText().equalsIgnoreCase("BLUE")) {
+                    choice++;
+                    colours.add(TextColour2.getText());
+                    distances.add(TextDistance2.getText());
+                    if (ChoiceBox2.isSelected()) {
+                        correctChoice = 2;
+                    }
+                } else {
+                    validInput = false;
+                    inValidAlert("You have entered an invalid input for the second colour. Make sure it is 'Red', 'Green', 'Blue' or 'Purple'");
                 }
             }
-        }
-        if (!(TextColour3.getText().equals("") || TextDistance3.getText().equals(""))) {
-            if (isNumber(TextColour3.getText()) || !isNumber(TextDistance3.getText())) {
-                validInput = false;
-                alert.setTitle("Invalid input");
-                alert.setHeaderText("Invalid Input");
-                alert.setContentText("You have entered an invalid input for the third colour or distance box");
-                alert.showAndWait();
-            } else {
-                choice++;
-                colours.add(TextColour3.getText());
-                distances.add(TextDistance3.getText());
-                if (ChoiceBox3.isSelected()) {
-                    correctChoice = 3;
-                }
-            }
-        }
-        if (!(TextColour4.getText().equals("") || TextDistance4.getText().equals(""))) {
-            if (isNumber(TextColour4.getText()) || !isNumber(TextDistance4.getText())) {
-                validInput = false;
-                alert.setTitle("Invalid input");
-                alert.setHeaderText("Invalid Input");
-                alert.setContentText("You have entered an invalid input for the forth colour or distance box");
-                alert.showAndWait();
-            } else {
-                choice++;
-                colours.add(TextColour4.getText());
-                distances.add(TextDistance4.getText());
-                if (ChoiceBox4.isSelected()) {
-                    correctChoice = 4;
-                }
-            }
+        } else if (validInput){
+            validInput = false;
+            inValidAlert("Enter details for the second choice");
         }
 
-        if ((choice < 2) && validInput) {
-            validInput = false;
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Input");
-            alert.setContentText("There needs to be more than 1 route choice !");
-            alert.showAndWait();
+        if (!(TextColour3.getText().equals("") || TextDistance3.getText().equals("")) && validInput) {
+            if (isNumber(TextColour3.getText()) || !isNumber(TextDistance3.getText())) {
+                validInput = false;
+                inValidAlert("You have entered an invalid input for the third colour or distance box");
+            } else {
+                if (TextColour3.getText().equalsIgnoreCase("RED") || TextColour3.getText().equalsIgnoreCase("GREEN") || TextColour3.getText().equalsIgnoreCase("PURPLE") || TextColour3.getText().equalsIgnoreCase("BLUE")) {
+                    choice++;
+                    colours.add(TextColour3.getText());
+                    distances.add(TextDistance3.getText());
+                    if (ChoiceBox3.isSelected()) {
+                        correctChoice = 3;
+                    }
+                } else {
+                    validInput = false;
+                    inValidAlert("You have entered an invalid input for the third colour. Make sure it is 'Red', 'Green', 'Blue' or 'Purple'");
+                }
+            }
+        }
+        if (!(TextColour4.getText().equals("") || TextDistance4.getText().equals("")) && validInput) {
+            if (isNumber(TextColour4.getText()) || !isNumber(TextDistance4.getText())) {
+                validInput = false;
+                inValidAlert("You have entered an invalid input for the forth colour or distance box");
+            } else {
+                if (TextColour4.getText().equalsIgnoreCase("RED") || TextColour4.getText().equalsIgnoreCase("GREEN") || TextColour4.getText().equalsIgnoreCase("PURPLE") || TextColour4.getText().equalsIgnoreCase("BLUE")) {
+                    choice++;
+                    colours.add(TextColour4.getText());
+                    distances.add(TextDistance4.getText());
+                    if (ChoiceBox4.isSelected()) {
+                        correctChoice = 4;
+                    }
+                } else {
+                    validInput = false;
+                    inValidAlert("You have entered an invalid input for the third colour. Make sure it is 'Red', 'Green', 'Blue' or 'Purple'");
+                }
+            }
         }
 
         if (String.valueOf(imageFiles[0]).equals("") || String.valueOf(imageFiles[1]).equals("") || String.valueOf(imageFiles[2]).equals("") && validInput) {
             validInput = false;
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Input");
-            alert.setContentText("Image File needed");
-            alert.showAndWait();
+            inValidAlert("Image File needed");
         }
         if (correctChoice == 0 && validInput) {
             validInput = false;
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Input");
-            alert.setContentText("Which one is the Best choice?");
-            alert.showAndWait();
+            inValidAlert("Which one is the Best choice?");
         }
 
         if (validInput) {
@@ -213,17 +214,20 @@ public class HelloController {
             tmpMap.setDistances(distances);
 
             tmpMap.saveToFile();
-
-            if(importedMapsList.size() > 0)
-            {
+            if (importedMapsList.size() > 0) {
                 updateBoxes();
             }
         }
-
-
-
-
     }
+
+    public void inValidAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Invalid Input");
+        alert.setHeaderText("Invalid Input");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     public String convertToCSV(String[] data) {
         return Stream.of(data)
@@ -244,7 +248,6 @@ public class HelloController {
         for (int i = 0; i < s.length(); i++)
             if (Character.isDigit(s.charAt(i)) == false)
                 return false;
-
         return true;
     }
 
@@ -263,7 +266,6 @@ public class HelloController {
                 stream = new FileInputStream("C:/Users/Ben04/Downloads/EM104989.jpg");
             } else {
                 stream = new FileInputStream(imageFiles[imageCounter]);
-
             }
             Image image = new Image(stream);
             ImageBox.setImage(image);
@@ -273,7 +275,6 @@ public class HelloController {
             System.out.println(e);
         }
     }
-
 
     private List<Maps> importedMapsList = new ArrayList<>();
 
@@ -311,8 +312,6 @@ public class HelloController {
             TextDistance4.setText(currentMap.getDistances().get(3));
         }
 
-
-
         switch (currentMap.getCorrectChoice()) {
             case 1:
                 ChoiceBox1.setSelected(true);
@@ -330,7 +329,6 @@ public class HelloController {
         change(new ActionEvent());
         imageCounter = 1;
         changeImage(new ActionEvent());
-
         importedMapsList.remove(currentMap);
     }
 
@@ -344,7 +342,7 @@ public class HelloController {
             while ((line = br.readLine()) != null) {
                 String[] splitData = line.split("\\|"); // Splitting by '|'
 
-                //if 0 ignore
+                //if <2 RC then ignore
                 if (splitData.length > 3) {
                     Maps tmpMap = new Maps(0);
                     String baseName = splitData[2].substring(0, splitData[2].lastIndexOf('.'));
@@ -357,13 +355,26 @@ public class HelloController {
                     tmpMap.setDistances(Arrays.stream(splitData[4].split(";")).collect(Collectors.toList()));
                     tmpMap.setCorrectChoice(tmpMap.getDistances().indexOf(Collections.min(tmpMap.getDistances())) + 1);
                     System.out.println(tmpMap.toString());
-                    importedMapsList.add(tmpMap);
-
+                    if (new File(tmpMap.getBlanklocation()).exists()) {
+                        importedMapsList.add(tmpMap);
+                    } else {
+                        System.out.println("FILE DOESN'T EXIST - NOT ADDED");
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        updateBoxes();
+        if (importedMapsList.size() > 0) {
+            updateBoxes();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Invalid Folder Choice");
+            alert.setHeaderText("Files Not Found");
+            alert.setHeight(500);
+            alert.setContentText("The chosen folder does not have the valid files in it. Make sure you have chosen 'A' when saving them all. The files in the folder should look like leg_01XXX_A.png");
+            alert.showAndWait();
+
+        }
     }
 }
